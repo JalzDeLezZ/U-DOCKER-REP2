@@ -6,14 +6,28 @@ services:
     image: mongo:6.0
     volumes:
       - poke-vol:/data/db
-    ports:
-      - 27018:27017
+    #! Hide port to outside for security
+    # ports:
+    #   - 27018:27017
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
     command: ["--auth"]
-
+  
+  mongo-express:
+    depends_on:
+      - db
+    container_name: mongo_express_zz
+    image: mongo-express:1.0.0-alpha.4
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: ${MONGO_DB_NAME}
+    ports:
+      - 8080:8081
+    restart: always
+    
 volumes:
   poke-vol:
     external: false
