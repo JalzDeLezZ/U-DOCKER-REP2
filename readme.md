@@ -11,4 +11,3 @@ $ docker container prune
 $ docker volume prune
 $ docker network prune
 $ docker image prune
-$ docker system prune
